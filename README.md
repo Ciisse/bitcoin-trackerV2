@@ -30,35 +30,26 @@ cd your-repo-name
 
 Backend Setup
 
-    Install dependencies:
+Install dependencies:
 
-bash
 
-composer install
+    composer install
 
     Copy .env.example to .env and configure your database connection:
 
-bash
-
-cp .env.example .env
+    cp .env.example .env
 
     Generate the application key:
 
-bash
+    php artisan key:generate
 
-php artisan key:generate
+Run the migrations to create the database tables:
 
-    Run the migrations to create the database tables:
+    php artisan migrate
 
-bash
+Start the development server:
 
-php artisan migrate
-
-    Start the development server:
-
-bash
-
-php artisan serve
+    php artisan serve
 
 Frontend Setup
 
