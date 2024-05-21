@@ -25,8 +25,8 @@ This web application allows users to register, buy and sell virtual bitcoins, ma
 
 ### Clone the repository
 
-git clone https://github.com/yourusername/your-repo-name.git
-cd your-repo-name
+git clone (https://github.com/Ciisse/bitcoin-trackerV2.git)
+cd bitcoin-trackerV2
 
 Backend Setup
 
