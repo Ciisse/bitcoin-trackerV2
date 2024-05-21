@@ -8,6 +8,7 @@ use App\Http\Controllers\TransactionHistoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TeamController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -41,3 +42,5 @@ Route::post('/add-balance/{userId}', [UserController::class, 'updateBalance'])->
 Route::get('/token:{token}', [TokenController::class, 'getToken']);
 
 require __DIR__ . '/auth.php';
+
+Route::get('/onze-team', [TeamController::class, 'show'])->name('team.show');
