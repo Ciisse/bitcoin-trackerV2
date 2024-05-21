@@ -7,6 +7,7 @@ use App\Http\Controllers\AddBalanceController;
 use App\Http\Controllers\TransactionHistoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TokenController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
