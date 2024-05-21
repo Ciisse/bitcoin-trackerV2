@@ -29,11 +29,11 @@
                 <p><strong>Balance:</strong> {{ $data['balance'] }}€</p>
                 <p><strong>Bitcoin:</strong> {{ $data['btcBalance'] }}</p>
                 <p><strong>BTC Rate:</strong> {{ $data['btcRate'] }}€</p>
-                <p><strong>Portfolio worth:</strong> {{ $data['portfolioWorth'] }}$</p>
+                <p><strong>Portfolio worth:</strong> {{ $data['portfolioWorth'] }}€</p>
                 <p>
                     <strong>Total Earnings:</strong> 
                     <span style="color: {{ $data['totalProfit'] >= 0 ? 'green' : 'red' }};">
-                        {{ $data['totalProfit'] }}$
+                        {{ $data['totalProfit'] }}€
                     </span>
                 </p>
             </div>
