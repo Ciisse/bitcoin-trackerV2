@@ -19,9 +19,9 @@ class TokenController extends Controller
         }
 
         $data = [
-            $data['name'],
-            $data['balance'],
-            $data['bitcoin'],
+            "name" => $data['name'],
+            "balance" => $data['balance'],
+            "bitcoins" => $data['bitcoin'],
         ];
 
         return response()->json($data);
