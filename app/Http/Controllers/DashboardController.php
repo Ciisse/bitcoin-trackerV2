@@ -17,10 +17,18 @@ class DashboardController extends Controller
         $response = file_get_contents($endpoint);
         $btcInfo = json_decode($response, true);
         $btcRate = $btcInfo['price'];
-        $portfolioWorth = $btcRate * $activeUser->bitcoin + $activeUser->balance;
+        $portfolioWorth = $this->getPortfolioWorth();
         $totalprofit = $this->getTotalProfit();
 
-        $data = ['name' => $activeUser->name, 'balance' => $activeUser->balance, 'btcBalance' => $activeUser->bitcoin, 'btcRate' => $btcRate, 'portfolioWorth' => $portfolioWorth, 'totalinvested' => $activeUser->totalinvested, 'totalProfit' => $totalprofit];
+        $data = [
+            'name' => $activeUser->name,
+            'balance' => $activeUser->balance,
+            'btcBalance' => $activeUser->bitcoin,
+            'btcRate' => $btcRate,
+            'portfolioWorth' => $portfolioWorth,
+            'totalinvested' => $activeUser->totalinvested,
+            'totalProfit' => $totalprofit
+        ];
 
         // Pass the user data to the view
         return view('dashboard', compact('data'));
@@ -83,14 +91,20 @@ class DashboardController extends Controller
         return redirect()->route('dashboard')->with('success', 'Transaction successful.');
     }
 
-    public function getTotalProfit()
+    public static function getTotalProfit()
     {
         $activeUser = Auth::user();
-        $btcRate = $this->getBtcRate();
-        $totalInvested = $activeUser->totalinvested;
-        $portfolioWorth = $btcRate * $activeUser->bitcoin + $activeUser->balance;
-        $totalprofit = $portfolioWorth - $totalInvested;
+        $totalInvested = $activeUser->totalInvested;
+        $portfolioWorth = (new self)->getPortfolioWorth();
+        $totalprofit = $portfolioWorth - $totalInvested;    
         return $totalprofit;
+    }
+
+    public function getPortfolioWorth(){
+        $activeUser = Auth::user();
+        $btcRate = $this->getBtcRate();
+        $portfolioWorth = $btcRate * $activeUser->bitcoin + $activeUser->balance;
+        return $portfolioWorth;
     }
 
     public function getBtcRate()

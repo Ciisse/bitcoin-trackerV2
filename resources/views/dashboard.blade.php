@@ -30,7 +30,12 @@
                 <p><strong>Bitcoin:</strong> {{ $data['btcBalance'] }}</p>
                 <p><strong>BTC Rate:</strong> {{ $data['btcRate'] }}€</p>
                 <p><strong>Portfolio worth:</strong> {{ $data['portfolioWorth'] }}$</p>
-                <p><strong>Total Earnings:</strong> {{ $data['totalProfit'] }}$</p>
+                <p>
+                    <strong>Total Earnings:</strong> 
+                    <span style="color: {{ $data['totalProfit'] >= 0 ? 'green' : 'red' }};">
+                        {{ $data['totalProfit'] }}$
+                    </span>
+                </p>
             </div>
 
             <!-- Form -->
