@@ -16,7 +16,7 @@ class MailController extends Controller
         $minimumEmailInterval = 60;
 
         // Construct the email content
-        $emailContent = 'Beste, de Bitcoinprijs is verlaagd met '. $data['priceChangePercent']. '%. Grijp nu je kans!';
+        $emailContent = 'Beste, de Bitcoinprijs is veranderd met '. $data['priceChangePercent']. '%. Grijp nu je kans!';
         $emailSubject = 'Bitcoin Price Alert';
 
         // Check if price change percent is above 10%
