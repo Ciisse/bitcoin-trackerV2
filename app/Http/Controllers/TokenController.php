@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\DashboardController;
 
 class TokenController extends Controller
 {
@@ -20,8 +21,7 @@ class TokenController extends Controller
         $data = [
             $data['name'],
             $data['balance'],
-            $data['btcBalance'],
-            $data['portfolioWorth'],
+            $data['bitcoin'],
         ];
 
         return response()->json($data);
