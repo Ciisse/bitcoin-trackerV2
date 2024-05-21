@@ -69,24 +69,31 @@ class UserController extends Controller
         return response()->json(['user' => $user], 200);
     }
 
-    public function updateBalance(Request $request, $userId)
-    {
-        $user = User::findOrFail($userId);
-    
-        $validatedData = $request->validate([
-            'balance' => 'required|numeric'
-        ]);
-    
-        $newBalance = $user->balance + $validatedData['balance']; // Add the new balance to the existing one
-        $newTotalInvested = $user->totalInvested + $validatedData['balance']; // Add the new balance to the total invested
-    
-        $user->update([
-            'balance' => $newBalance,
-            'totalInvested' => $newTotalInvested
-        ]); // Update both fields in the database
-    
-        return redirect()->route('dashboard')->with('success', 'Balance and total invested successfully updated.'); // Redirect back to the dashboard with a success message
+public function updateBalance(Request $request, $userId, $operation)
+{
+    $user = User::findOrFail($userId);
+
+    $validatedData = $request->validate([
+        'balance' => 'required|numeric'
+    ]);
+
+    if ($operation == 'withdraw') {
+        if ($user->balance < $validatedData['balance']) {
+            return back()->with('error', 'Insufficient balance.');
+        }
+        $newBalance = $user->balance - $validatedData['balance'];
+    } else {
+        $newBalance = $user->balance + $validatedData['balance'];
     }
-    
+
+    $newTotalInvested = $user->totalInvested + $validatedData['balance'];
+
+    $user->update([
+        'totalInvested' => $newTotalInvested,
+        'balance' => $newBalance
+    ]);
+
+    return redirect()->route('dashboard')->with('success', 'Balance successfully updated.');
+    }
 }
 
