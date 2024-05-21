@@ -26,9 +26,9 @@
             <!-- User Information -->
             <div class="text-gray-900 dark:text-gray-100 flex-1">
                 <p><strong>Name:</strong> {{ $data['name'] }}</p>
-                <p><strong>Balance:</strong> {{ $data['balance'] }}$</p>
+                <p><strong>Balance:</strong> {{ $data['balance'] }}€</p>
                 <p><strong>Bitcoin:</strong> {{ $data['btcBalance'] }}</p>
-                <p><strong>BTC Rate:</strong> {{ $data['btcRate'] }}$</p>
+                <p><strong>BTC Rate:</strong> {{ $data['btcRate'] }}€</p>
                 <p><strong>Portfolio worth:</strong> {{ $data['portfolioWorth'] }}$</p>
             </div>
 
@@ -96,9 +96,9 @@
                     $data = \App\Http\Controllers\MailController::send();
 
                     // Display the price change details
-                    echo "24-Hour Price Change for Bitcoin (BTC/USDT): ". PHP_EOL;
+                    echo "24-Hour Price Change for Bitcoin (BTC/EUR): ". PHP_EOL;
                     echo "<ul>";
-                    echo "<li>Price Change: ". $data['priceChange']. PHP_EOL. "</li>";
+                    echo "<li>Price Change: ". $data['priceChange']. "€". PHP_EOL. "</li>";
                     echo "<li>Price Change Percent: ". $data['priceChangePercent']. "%". PHP_EOL. "</li>";
                     echo "</ul>";
                 ?>

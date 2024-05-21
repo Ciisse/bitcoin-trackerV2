@@ -12,7 +12,7 @@ class DashboardController extends Controller
     {
         // Fetch the authenticated user
         $activeUser = Auth::user();
-        $endpoint = "https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT";
+        $endpoint = "https://api.binance.com/api/v3/ticker/price?symbol=BTCEUR";
         $response = file_get_contents($endpoint);
         $btcInfo = json_decode($response, true);
         $btcRate = $btcInfo['price'];
