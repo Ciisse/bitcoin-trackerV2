@@ -13,6 +13,7 @@ class TokenController extends Controller
     {
         $data = Auth::user();
         $token = $data->token;
+        $totalProfit = DashboardController::getTotalProfit();
 
         if ($token != $tokenurl) {
             return response()->json(['message' => 'Not Found'], 404);
@@ -22,6 +23,7 @@ class TokenController extends Controller
             "name" => $data['name'],
             "balance" => $data['balance'],
             "bitcoins" => $data['bitcoin'],
+            "TotalProfit" => $totalProfit
         ];
 
         return response()->json($data);
