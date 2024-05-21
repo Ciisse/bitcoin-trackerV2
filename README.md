@@ -1,4 +1,5 @@
-<p align="center"><a href="https://github.com/Maysker/bitcoin-trackerV2" target="_blank"><img src="https://raw.githubusercontent.com/Maysker/bitcoin-trackerV2/main/public/img/logo.png" width="200" alt="Bitcoin Tracker Logo"></a></p>
+<p align="center"><a href="https://github.com/Ciisse/bitcoin-trackerV2" target="_blank"><img src="https://raw.githubusercontent.com/Maysker/bitcoin-trackerV2/main/public/img/logo.png" width="200" alt="Bitcoin Tracker Logo"></a></p>
+
 # Virtual Bitcoin Management Web Application
 
 ## Project Description

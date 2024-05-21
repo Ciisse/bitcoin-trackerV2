@@ -6,6 +6,7 @@ use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\AddBalanceController;
 use App\Http\Controllers\TransactionHistoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
@@ -21,7 +22,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::middleware('auth')->get('/profile/transactions', [TransactionHistoryController::class, 'index'])->name('transactions.index');
-
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
@@ -36,4 +36,8 @@ Route::post('/picture-route', [FileUploadController::class, 'store']);
 
 Route::post('/add-balance/{userId}', [UserController::class, 'updateBalance'])->name('add.balance');
 
-require __DIR__.'/auth.php';
+
+//Route to the specified token
+Route::get('/token:{token}', [TokenController::class, 'getToken']);
+
+require __DIR__ . '/auth.php';
