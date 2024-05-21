@@ -12,8 +12,8 @@
                 <div class="max-w-xl">
                     <form method="POST" action="{{ route('add.balance', $user->id) }}" enctype="multipart/form-data">
                         @csrf
-                        <x-input-label for="balance" :value="__('Balance')" />
-                        <x-text-input id="balance" name="balance" type="number" class="mt-1 block w-full" :value="old('balance', $user->balance)" />
+                        <x-input-label for="balance" value="Add balance" />
+                        <x-text-input id="balance" name="balance" type="number" class="mt-1 block w-full" :value="0,00" />                        
                         <x-input-error class="mt-2" :messages="$errors->get('balance')" />
                         <x-primary-button class="mt-2">Add Balance</x-primary-button>
                     </form>
