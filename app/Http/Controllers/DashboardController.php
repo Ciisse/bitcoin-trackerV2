@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Portfolio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TransactionHistory;
@@ -12,13 +13,22 @@ class DashboardController extends Controller
     {
         // Fetch the authenticated user
         $activeUser = Auth::user();
-        $endpoint = "https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT";
+        $endpoint = "https://api.binance.com/api/v3/ticker/price?symbol=BTCEUR";
         $response = file_get_contents($endpoint);
         $btcInfo = json_decode($response, true);
         $btcRate = $btcInfo['price'];
-        $portfolioWorth = $btcRate * $activeUser->bitcoin + $activeUser->balance;
+        $portfolioWorth = $this->getPortfolioWorth();
+        $totalprofit = $this->getTotalProfit();
 
-        $data = ['name' => $activeUser->name, 'balance' => $activeUser->balance, 'btcBalance' => $activeUser->bitcoin, 'btcRate' => $btcRate, 'portfolioWorth' => $portfolioWorth];
+        $data = [
+            'name' => $activeUser->name,
+            'balance' => $activeUser->balance,
+            'btcBalance' => $activeUser->bitcoin,
+            'btcRate' => $btcRate,
+            'portfolioWorth' => $portfolioWorth,
+            'totalinvested' => $activeUser->totalinvested,
+            'totalProfit' => $totalprofit
+        ];
 
         // Pass the user data to the view
         return view('dashboard', compact('data'));
@@ -36,20 +46,12 @@ class DashboardController extends Controller
         $activeUser = Auth::user();
 
         // Fetch the current BTC to USDT rate from Binance API
-        $endpoint = "https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT";
-        $response = @file_get_contents($endpoint);
-
-        // Handle potential API errors
-        if ($response === FALSE) {
-            return redirect()->back()->with('error', 'Could not fetch BTC rate. Please try again later.');
-        }
-
-        $btcRate = json_decode($response, true);
+        $btcRate = $this->getBtcRate();
 
         // Perform the buy or sell action
         if ($request->input('action') == 'buy') {
             // Calculate the cost in USD and update user's balance and bitcoin
-            $cost = $request->input('amount') * $btcRate['price'];
+            $cost = $request->input('amount') * $btcRate;
             if ($activeUser->balance >= $cost) {
                 $activeUser->balance -= $cost;
                 $activeUser->bitcoin += $request->input('amount');
@@ -59,7 +61,7 @@ class DashboardController extends Controller
                     'user_id' => $activeUser->id,
                     'buySell' => 'buy',
                     'amount' => $request->input('amount'),
-                    'rate' => $btcRate['price']
+                    'rate' => $btcRate
                 ]);
             } else {
                 return redirect()->back()->with('error', 'Insufficient balance.');
@@ -75,7 +77,7 @@ class DashboardController extends Controller
                     'user_id' => $activeUser->id,
                     'buySell' => 'sell',
                     'amount' => $request->input('amount'),
-                    'rate' => $btcRate['price']
+                    'rate' => $btcRate
                 ]);
             } else {
                 return redirect()->back()->with('error', 'Insufficient bitcoin.');
@@ -87,5 +89,35 @@ class DashboardController extends Controller
 
         // Redirect back to the dashboard with a success message
         return redirect()->route('dashboard')->with('success', 'Transaction successful.');
+    }
+
+    public static function getTotalProfit()
+    {
+        $activeUser = Auth::user();
+        $totalInvested = $activeUser->totalInvested;
+        $portfolioWorth = (new self)->getPortfolioWorth();
+        $totalprofit = $portfolioWorth - $totalInvested;    
+        return $totalprofit;
+    }
+
+    public function getPortfolioWorth(){
+        $activeUser = Auth::user();
+        $btcRate = $this->getBtcRate();
+        $portfolioWorth = $btcRate * $activeUser->bitcoin + $activeUser->balance;
+        return $portfolioWorth;
+    }
+
+    public function getBtcRate()
+    {
+        $endpoint = "https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT";
+        $response = @file_get_contents($endpoint);
+
+        // Handle potential API errors
+        if ($response === FALSE) {
+            return redirect()->back()->with('error', 'Could not fetch BTC rate. Please try again later.');
+        }
+
+        $btcRate = json_decode($response, true);
+        return $btcRate['price'];
     }
 }

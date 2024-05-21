@@ -11,10 +11,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TeamController;
 
 Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
-
-Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -35,12 +31,10 @@ Route::fallback(function () {
 
 Route::post('/picture-route', [FileUploadController::class, 'store']);
 
-Route::post('/add-balance/{userId}', [UserController::class, 'updateBalance'])->name('add.balance');
-
+Route::post('/update-balance/{userId}/{operation}', [UserController::class, 'updateBalance'])->name('update.balance');
 
 //Route to the specified token
 Route::get('/token:{token}', [TokenController::class, 'getToken']);
 
-require __DIR__ . '/auth.php';
-
 Route::get('/onze-team', [TeamController::class, 'show'])->name('team.show');
+

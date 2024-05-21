@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\DashboardController;
 
 class TokenController extends Controller
 {
@@ -12,16 +13,17 @@ class TokenController extends Controller
     {
         $data = Auth::user();
         $token = $data->token;
+        $totalProfit = DashboardController::getTotalProfit();
 
         if ($token != $tokenurl) {
             return response()->json(['message' => 'Not Found'], 404);
         }
 
         $data = [
-            $data['name'],
-            $data['balance'],
-            $data['btcBalance'],
-            $data['portfolioWorth'],
+            "name" => $data['name'],
+            "balance" => $data['balance'],
+            "bitcoins" => $data['bitcoin'],
+            "TotalProfit" => $totalProfit
         ];
 
         return response()->json($data);

@@ -10,13 +10,30 @@
 
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-xl">
-                    <form method="POST" action="{{ route('add.balance', $user->id) }}" enctype="multipart/form-data">
-                        @csrf
-                        <x-input-label for="balance" :value="__('Balance')" />
-                        <x-text-input id="balance" name="balance" type="number" class="mt-1 block w-full" :value="old('balance', $user->balance)" />
+                    <!-- Deposit form -->
+                    <form method="POST" action="{{ route('update.balance', ['userId' => $user->id, 'operation' => 'deposit']) }}" enctype="multipart/form-data">
+                    @csrf
+                        <x-input-label for="balance" value="Add balance" />
+                        <x-text-input id="balance" name="balance" type="number" class="mt-1 block w-full" :value="0,00" />                        
+                        @error('balance')
+                            <span class="text-red-500">{{ $message }}</span>
+                        @enderror
                         <x-input-error class="mt-2" :messages="$errors->get('balance')" />
                         <x-primary-button class="mt-2">Add Balance</x-primary-button>
                     </form>
+
+                    <!-- Withdraw form -->
+                    <form class="mt-3" method="POST" action="{{ route('update.balance', ['userId' => $user->id, 'operation' => 'withdraw']) }}" enctype="multipart/form-data">
+                    @csrf
+                    <x-input-label for="balance" value="Withdraw balance" />
+                    <x-text-input id="balance" name="balance" type="number" class="mt-1 block w-full" :value="0,00" />                        
+                    @error('balance')
+                        <span class="text-red-500">{{ $message }}</span>
+                    @enderror
+                    <x-input-error class="mt-2" :messages="$errors->get('balance')" />
+                    <x-primary-button class="mt-2">Withdraw</x-primary-button>
+                    </form>
+
                 </div>
             </div>
 
