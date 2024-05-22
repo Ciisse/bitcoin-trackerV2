@@ -69,7 +69,7 @@ class DashboardController extends Controller
         } else {
             // Calculate the earnings in USD and update user's balance and bitcoin
             if ($activeUser->bitcoin >= $request->input('amount')) {
-                $earnings = $request->input('amount') * $btcRate['price'];
+                $earnings = $request->input('amount') * $btcRate;
                 $activeUser->balance += $earnings;
                 $activeUser->bitcoin -= $request->input('amount');
 
@@ -96,11 +96,12 @@ class DashboardController extends Controller
         $activeUser = Auth::user();
         $totalInvested = $activeUser->totalInvested;
         $portfolioWorth = (new self)->getPortfolioWorth();
-        $totalprofit = $portfolioWorth - $totalInvested;    
+        $totalprofit = $portfolioWorth - $totalInvested;
         return $totalprofit;
     }
 
-    public function getPortfolioWorth(){
+    public function getPortfolioWorth()
+    {
         $activeUser = Auth::user();
         $btcRate = $this->getBtcRate();
         $portfolioWorth = $btcRate * $activeUser->bitcoin + $activeUser->balance;

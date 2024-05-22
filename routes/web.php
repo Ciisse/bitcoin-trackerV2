@@ -13,8 +13,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    return view('welcome');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -37,7 +37,6 @@ Route::post('/update-balance/{userId}/{operation}', [UserController::class, 'upd
 
 //Route to the specified token
 Route::get('/token:{token}', [TokenController::class, 'getToken']);
-
 
 Route::get('/auth/redirect', function () {
     return Socialite::driver('github')->redirect();
