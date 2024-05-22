@@ -8,6 +8,9 @@ use App\Http\Controllers\TransactionHistoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UserController;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('dashboard');
@@ -34,5 +37,27 @@ Route::post('/update-balance/{userId}/{operation}', [UserController::class, 'upd
 
 //Route to the specified token
 Route::get('/token:{token}', [TokenController::class, 'getToken']);
+
+
+Route::get('/auth/redirect', function () {
+    return Socialite::driver('github')->redirect();
+});
+ 
+Route::get('/callback-url', function () {
+    $githubUser = Socialite::driver('github')->user();
+    //dd($githubUser);
+
+    $user = User::firstOrCreate(
+        [
+            'name' => $githubUser->nickname,
+            'email' => $githubUser->email,
+            'password' => bcrypt($githubUser->id),
+        ]
+    );
+
+    Auth::login($user);
+ 
+    return redirect('/dashboard');
+});
 
 require __DIR__ . '/auth.php';
