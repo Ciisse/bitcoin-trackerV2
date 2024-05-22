@@ -38,7 +38,6 @@ Route::post('/update-balance/{userId}/{operation}', [UserController::class, 'upd
 //Route to the specified token
 Route::get('/token:{token}', [TokenController::class, 'getToken']);
 
-
 Route::get('/auth/redirect', function () {
     return Socialite::driver('github')->redirect();
 });
