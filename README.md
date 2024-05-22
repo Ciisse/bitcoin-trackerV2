@@ -35,17 +35,21 @@ Install dependencies:
 
     composer install
 
-    Copy .env.example to .env and configure your database connection:
+Copy .env.example to .env and configure your database connection:
 
     cp .env.example .env
 
-    Generate the application key:
+Generate the application key:
 
     php artisan key:generate
 
 Run the migrations to create the database tables:
 
     php artisan migrate
+    
+Creating a symbolic link to access files in the storage directory:
+
+    php artisan storage:link
 
 Start the development server:
 
